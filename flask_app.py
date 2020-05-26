@@ -29,10 +29,10 @@ def delete_file(img_title):
 
 
 def make_certificate(first_name, last_name, track):
-    filename = "Fitila Certificate.png"
+    filename = "fitila.png"
     font = "PTSans-Bold.ttf"
     color = "#ff0000"
-    size = 50
+    size = 30
     track_color = "#000000"
     track_size = 20
     y = 350
@@ -56,7 +56,7 @@ def make_certificate(first_name, last_name, track):
     x, y = 183, 450
     draw.text((x, y), track, fill=track_color, font=PIL_font)
 
-    img_title = "{}-{}-{}-30daysofcode.png".format(first_name, last_name, type)
+    img_title = "{}-{}-{}-fitila.png".format(first_name, last_name, type)
     img.save(os.path.join(GENERATED_PATH, img_title))
     task = Timer(30, delete_file, (img_title,))
     task.start()
