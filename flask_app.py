@@ -5,13 +5,13 @@ from PIL import Image, ImageFont, ImageDraw
 from flask import Flask, request, url_for, redirect
 
 
+app = Flask(__name__)
 BASE_PATH = os.path.dirname(__file__)
 STATIC_PATH = os.path.join(BASE_PATH, "static")
 FONT_PATH = os.path.join(STATIC_PATH, "fonts")
 CERTIFICATE_PATH = os.path.join(STATIC_PATH, "certificates")
 GENERATED_PATH = os.path.join(STATIC_PATH, "generated")
 
-app = Flask(__name__)
 
 @app.route("/")
 def index():
@@ -29,15 +29,20 @@ def delete_file(img_title):
 
 
 def make_certificate(first_name, last_name, track):
+    # set certificate style
     filename = "fitila.png"
     font = "PTSans-Bold.ttf"
-    color = "#ff0000"
-    size = 30
-    track_color = "#000000"
-    track_size = 20
-    y = 350
-    x = 0
 
+    # name style
+    color = "#ff0000"
+    size = 230
+    y = 1450
+
+    # track style
+    track_color = "#000000"
+    track_size = 130
+
+    # name text
     text = "{} {}".format(first_name, last_name).upper()
     raw_img = Image.open(os.path.join(CERTIFICATE_PATH, filename))
     img = raw_img.copy()
@@ -47,16 +52,17 @@ def make_certificate(first_name, last_name, track):
     PIL_font = ImageFont.truetype(os.path.join(FONT_PATH, font), size)
     w, h = draw.textsize(text, font=PIL_font)
     W, H = img.size
-    x = (W - w) / 2 if x == 0 else x
+    x = (W - w) / 2
     draw.text((x, y), text, fill=color, font=PIL_font)
 
     # draw track
     PIL_font = ImageFont.truetype(os.path.join(FONT_PATH, font), track_size)
     w, h = draw.textsize(track, font=PIL_font)
-    x, y = 183, 450
+    x, y = 2170, 2110
     draw.text((x, y), track, fill=track_color, font=PIL_font)
 
-    img_title = "{}-{}-{}-fitila.png".format(first_name, last_name, type)
+    # save certificate
+    img_title = "{}-{}-{}.png".format(first_name, last_name, track)
     img.save(os.path.join(GENERATED_PATH, img_title))
     task = Timer(30, delete_file, (img_title,))
     task.start()
